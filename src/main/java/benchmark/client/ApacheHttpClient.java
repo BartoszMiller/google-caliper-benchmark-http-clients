@@ -2,6 +2,7 @@ package benchmark.client;
 
 import benchmark.api.HttpBinClient;
 import benchmark.model.httpbin.IpAddress;
+import benchmark.model.httpbin.UserAgent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -21,6 +22,13 @@ public class ApacheHttpClient implements HttpBinClient {
 
         HttpResponse response = httpClient.execute(new HttpGet(HttpBinClient.URL_IP));
         return mapper.readValue(response.getEntity().getContent(), IpAddress.class);
+    }
+
+    @Override
+    public UserAgent findUserAgent() throws IOException {
+
+        HttpResponse response = httpClient.execute(new HttpGet(HttpBinClient.URL_USER_AGENT));
+        return mapper.readValue(response.getEntity().getContent(), UserAgent.class);
     }
 
     @Override

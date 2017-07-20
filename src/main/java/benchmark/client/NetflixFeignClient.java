@@ -3,11 +3,11 @@ package benchmark.client;
 import benchmark.api.HttpBinClient;
 import benchmark.api.HttpBinClientNetflixFeign;
 import benchmark.model.httpbin.IpAddress;
+import benchmark.model.httpbin.UserAgent;
 import feign.Feign;
 import feign.Response;
 import feign.jackson.JacksonDecoder;
 import feign.okhttp.OkHttpClient;
-import okhttp3.ResponseBody;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +22,11 @@ public class NetflixFeignClient implements HttpBinClient {
     @Override
     public IpAddress findIp() throws IOException {
         return httpBinClientNetflixFeign.findIp();
+    }
+
+    @Override
+    public UserAgent findUserAgent() throws IOException {
+        return httpBinClientNetflixFeign.findUserAgent();
     }
 
     @Override

@@ -5,11 +5,14 @@ import benchmark.client.ApacheHttpClient;
 import benchmark.client.NetflixFeignClient;
 import benchmark.client.OkHttpClient;
 import benchmark.client.RetrofitClient;
+import benchmark.model.httpbin.IpAddress;
+import benchmark.model.httpbin.UserAgent;
 import com.google.caliper.Benchmark;
 import com.google.caliper.Param;
 import com.google.caliper.api.VmOptions;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,22 +41,26 @@ public class HttpClientBenchmarks {
     String clientName;
 
     @Benchmark
-    int httpBin_findIp(int reps) throws IOException {
+    void httpBin_findIp(int reps) throws IOException {
         HttpBinClient httpBinClient = httpClients.get(clientName);
-        int dummy = 0;
         for (int i = 0; i < reps; i++) {
-            dummy |= httpBinClient.findIp().hashCode();
+            IpAddress ip = httpBinClient.findIp();
         }
-        return dummy;
     }
 
     @Benchmark
-    int httpBin_streamLines(int reps) throws IOException {
+    void httpBin_userAgent(int reps) throws IOException {
         HttpBinClient httpBinClient = httpClients.get(clientName);
-        int dummy = 0;
         for (int i = 0; i < reps; i++) {
-            dummy |= httpBinClient.streamLines(100).hashCode();
+            UserAgent userAgent = httpBinClient.findUserAgent();
         }
-        return dummy;
+    }
+
+    //    @Benchmark
+    void httpBin_streamLines(int reps) throws IOException {
+        HttpBinClient httpBinClient = httpClients.get(clientName);
+        for (int i = 0; i < reps; i++) {
+            InputStream inputStream = httpBinClient.streamLines(1);
+        }
     }
 }

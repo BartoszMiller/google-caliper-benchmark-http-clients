@@ -3,6 +3,7 @@ package benchmark.client;
 import benchmark.api.HttpBinClient;
 import benchmark.api.HttpBinClientRetrofit;
 import benchmark.model.httpbin.IpAddress;
+import benchmark.model.httpbin.UserAgent;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -23,6 +24,12 @@ public class RetrofitClient implements HttpBinClient {
     @Override
     public IpAddress findIp() throws IOException {
         Call<IpAddress> ipCall = httpBinClientRetrofit.findIpRetrofit();
+        return ipCall.execute().body();
+    }
+
+    @Override
+    public UserAgent findUserAgent() throws IOException {
+        Call<UserAgent> ipCall = httpBinClientRetrofit.findUserAgent();
         return ipCall.execute().body();
     }
 

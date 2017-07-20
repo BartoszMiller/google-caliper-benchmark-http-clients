@@ -2,6 +2,7 @@ package benchmark.client;
 
 import benchmark.api.HttpBinClient;
 import benchmark.model.httpbin.IpAddress;
+import benchmark.model.httpbin.UserAgent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -23,6 +24,17 @@ public class OkHttpClient implements HttpBinClient {
 
         Response response = okHttpClient.newCall(request).execute();
         return mapper.readValue(response.body().bytes(), IpAddress.class);
+    }
+
+    @Override
+    public UserAgent findUserAgent() throws IOException {
+
+        Request request = new Request.Builder()
+                .url(HttpBinClient.URL_USER_AGENT)
+                .build();
+
+        Response response = okHttpClient.newCall(request).execute();
+        return mapper.readValue(response.body().bytes(), UserAgent.class);
     }
 
     @Override
