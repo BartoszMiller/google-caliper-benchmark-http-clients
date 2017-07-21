@@ -1,50 +1,26 @@
 package benchmark.client;
 
-import benchmark.api.HttpBinClient;
-import benchmark.model.httpbin.IpAddress;
-import benchmark.model.httpbin.UserAgent;
+import benchmark.api.LocalhostClient;
+import benchmark.model.greeting.Greeting;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
-import java.io.InputStream;
 
-public class OkHttpClient implements HttpBinClient {
+public class OkHttpClient implements LocalhostClient {
 
     okhttp3.OkHttpClient okHttpClient = new okhttp3.OkHttpClient();
     ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public IpAddress findIp() throws IOException {
+    public Greeting greet() throws IOException {
 
         Request request = new Request.Builder()
-                .url(HttpBinClient.URL_IP)
+                .url(LocalhostClient.URL)
                 .build();
 
         Response response = okHttpClient.newCall(request).execute();
-        return mapper.readValue(response.body().bytes(), IpAddress.class);
-    }
-
-    @Override
-    public UserAgent findUserAgent() throws IOException {
-
-        Request request = new Request.Builder()
-                .url(HttpBinClient.URL_USER_AGENT)
-                .build();
-
-        Response response = okHttpClient.newCall(request).execute();
-        return mapper.readValue(response.body().bytes(), UserAgent.class);
-    }
-
-    @Override
-    public InputStream streamLines(int lines) throws IOException {
-
-        Request request = new Request.Builder()
-                .url(String.format(HttpBinClient.URL_STREAM, lines))
-                .build();
-
-        Response response = okHttpClient.newCall(request).execute();
-        return response.body().byteStream();
+        return mapper.readValue(response.body().bytes(), Greeting.class);
     }
 }

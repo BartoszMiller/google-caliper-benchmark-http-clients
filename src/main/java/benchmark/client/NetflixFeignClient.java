@@ -1,37 +1,24 @@
 package benchmark.client;
 
-import benchmark.api.HttpBinClient;
-import benchmark.api.HttpBinClientNetflixFeign;
-import benchmark.model.httpbin.IpAddress;
-import benchmark.model.httpbin.UserAgent;
+import benchmark.api.LocalhostClient;
+import benchmark.api.LocalhostClientNetflixFeign;
+import benchmark.model.greeting.Greeting;
 import feign.Feign;
-import feign.Response;
 import feign.jackson.JacksonDecoder;
 import feign.okhttp.OkHttpClient;
 
 import java.io.IOException;
-import java.io.InputStream;
 
-public class NetflixFeignClient implements HttpBinClient {
+public class NetflixFeignClient implements LocalhostClient {
 
-    HttpBinClientNetflixFeign httpBinClientNetflixFeign = Feign.builder()
+    LocalhostClientNetflixFeign localhostClientNetflixFeign = Feign.builder()
             .client(new OkHttpClient())
             .decoder(new JacksonDecoder())
-            .target(HttpBinClientNetflixFeign.class, HttpBinClient.BASE_URL);
+            .target(LocalhostClientNetflixFeign.class, LocalhostClient.BASE_URL);
+
 
     @Override
-    public IpAddress findIp() throws IOException {
-        return httpBinClientNetflixFeign.findIp();
-    }
-
-    @Override
-    public UserAgent findUserAgent() throws IOException {
-        return httpBinClientNetflixFeign.findUserAgent();
-    }
-
-    @Override
-    public InputStream streamLines(int lines) throws IOException {
-        Response response = httpBinClientNetflixFeign.streamLines(lines);
-        return response.body().asInputStream();
+    public Greeting greet() throws IOException {
+        return localhostClientNetflixFeign.greet();
     }
 }
